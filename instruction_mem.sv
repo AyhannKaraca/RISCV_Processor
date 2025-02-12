@@ -21,18 +21,16 @@
 
 
 module instruction_mem #(
-    parameter MEM_SIZE = 64
+    parameter MEM_SIZE = 80
 )(
-    
-    input logic  [31:0] read_address_i,
+    input  logic [31:0] read_address_i,
     output logic [31:0] instruction_o
     );
     
     logic [31:0] i_mem [0:MEM_SIZE-1];
     
         
-        initial begin
-      
+    initial begin 
         i_mem[0] = 32'h00518193; // addi x3, x3, 5 --> x3=5
         i_mem[1] = 32'h00a20213; // addi x4, x4, 10 --> x4=10
         i_mem[2] = 32'h003202b3; // add x5, x4, x3 --> x5=15
@@ -72,7 +70,7 @@ module instruction_mem #(
         i_mem[36] = 32'h00ae0e13; // addi x28, x28, 10
         i_mem[37] = 32'h018b1463; // bne x22,x24,8-->nop,PC=PC+1
         i_mem[38] = 32'h028d8567; // jalr x10, 40(x27)--> x10=156--PC=40(pc=160) 
-        i_mem[39] = 32'h00ae0e13; // addi x28, x28, 10
+        i_mem[39] = 32'h00418033; // add x0, x3, x4; --> x0 = 0
         i_mem[40] = 32'h00ae0e13; // addi x28, x28, 10
         i_mem[41] = 32'h0137c463; // blt x15,x19,8 -->nop,PC=PC+1
         i_mem[42] = 32'h0137d463; // bge x15,x19,8 -->PC=44
@@ -86,25 +84,43 @@ module instruction_mem #(
         i_mem[50] = 32'h0051a1a3; // sw x5, 3(x3) --> M[2] = m[8] = 305418240 
         i_mem[51] = 32'h005194a3; // sh x5, 9(x3) --> M[3] = 1342177280(m[14])
         i_mem[52] = 32'h0071a403; // lw x8, 7(x3) --> x8 = M[3] = 1342177280
-        i_mem[53] = 32'h00ae0e13; // addi x28, x28, 10
-        i_mem[54] = 32'h00ae0e13; // addi x28, x28, 10
-        i_mem[55] = 32'h00ae0e13; // addi x28, x28, 10
-        i_mem[56] = 32'h00ae0e13; // addi x28, x28, 10
-        i_mem[57] = 32'h00ae0e13; // addi x28, x28, 10
-        i_mem[58] = 32'h00ae0e13; // addi x28, x28, 10
-        i_mem[59] = 32'h00ae0e13; // addi x28, x28, 10
-        i_mem[60] = 32'h00ae0e13; // addi x28, x28, 10
-        i_mem[61] = 32'h00ae0e13; // addi x28, x28, 10
-        i_mem[62] = 32'h00ae0e13; // addi x28, x28, 10
-        i_mem[63] = 32'h00ae0e13; // addi x28, x28, 10
-      
-        
+        i_mem[53] = 32'h0000fb37; // lui x22,15 --> x22 = 61440
+        i_mem[54] = 32'h00011bb7; // lui x23,17 --> x23 = 69632
+        i_mem[55] = 32'h416b8bb3; // sub x23, x23, x22 --> x23 = 8192
+        i_mem[56] = 32'h811b8b93; // addi x23, x23, -2031 --> x23 = 6161
+        i_mem[57] = 32'h01748623; // sb x23, 12(x9) --> M[8] = 4352(m[33])
+        i_mem[58] = 32'h00c48e83; // lb x29, 12(x9) --> x29 = 17
+        i_mem[59] = 32'h007c1f03; // lh x30, 7(x24) --> x30 = 20480
+        i_mem[60] = 32'h01fc2f83; // lw x31, 31(x24) --> x31 = 4352
+        i_mem[61] = 32'h417b0bb3; // sub x23, x22, x23 --> x23 = 55279    -8192
+        i_mem[62] = 32'h80800b93; // addi x23, x0, -2040 --> x23 = -2040
+        i_mem[63] = 32'h808b8b93; // addi x23, x23, -2040 --> x23 = -4080  
+        i_mem[64] = 32'h808b8b93; // addi x23, x23, -2040 --> x23 = -6120 
+        i_mem[65] = 32'h808b8b93; // addi x23, x23, -2040 --> x23 = -8160
+        i_mem[66] = 32'hfe0b8b93; // addi x23, x23, -32 --> x23 = -8192
+        i_mem[67] = 32'hbf9b8c13; // addi x24, x23, -1031 --> x24 = -9223
+        i_mem[68] = 32'h01702023; // sw x23, 0(x0) --> M[0] = -8192 
+        i_mem[69] = 32'h01802223; // sw x24, 4(x0) --> M[1] = -9223
+        i_mem[70] = 32'h00404883; // lbu x17, 4(x0) --> x17 = 249 
+        i_mem[71] = 32'h017c0cb3; // add x25, x24, x23; --> x25 = -17415
+        i_mem[72] = 32'h019c8cb3; // add x25, x25, x25; --> x25 = -34830
+        i_mem[73] = 32'h019c8cb3; // add x25, x25, x25; --> x25 = -69660
+        i_mem[74] = 32'h01902823; // sw x25, 16(x0) --> M[4] = -69660
+        i_mem[75] = 32'h01205903; // lhu x18, 18(x0) --> x18 = 65534
+        i_mem[76] = 32'h808b8b93; // addi x23, x23, -2040 --> x23 = x23-2040
+        i_mem[77] = 32'h808b8b93; // addi x23, x23, -2040 --> x23 = x23-2040
+        i_mem[78] = 32'h00418033; // add x0, x3, x4 --> x0 = 15, when read 0
+        i_mem[79] = 32'h5dc00093; // addi x1, x0, 1500 --> x1 = 1500         
     end
 
-//    for debugging...
-   
+//--- sub_sig is signal for debugging...
     logic [31:0] sub_sig;
-    assign sub_sig = read_address_i >>2;
+    assign sub_sig = (read_address_i >> 2);
+//---   
+
+    assign instruction_o = i_mem[read_address_i >> 2];
+
+endmodule
     
     
     
