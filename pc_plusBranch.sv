@@ -21,14 +21,11 @@
 
 
 module pc_plusBranch(
-    input logic [31:0] fromPC_i,
-    input logic [31:0] fromImmGen_i,
-    
+    input  logic [31:0] fromPC_i,
+    input  logic [31:0] fromImmGen_i,
     output logic [31:0] added_result_o
-    
     );
-    
-    always_comb begin
-        added_result_o = fromPC_i + fromImmGen_i;
-    end
+
+    assign added_result_o = fromPC_i + fromImmGen_i;
+
 endmodule
