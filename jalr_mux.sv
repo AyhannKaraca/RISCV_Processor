@@ -21,20 +21,12 @@
 
 
 module jalr_mux(
-    input logic [31:0] fromALU_i,
-    input logic [31:0] fromBrunchMux_i,
-    input logic        jalr_sig,
-    
+    input  logic [31:0] fromALU_i,
+    input  logic [31:0] fromBrunchMux_i,
+    input  logic        jalr_sig, 
     output logic [31:0] jalr_mux_o
     );
-    
-    always_comb begin
-        if(jalr_sig)begin
-            jalr_mux_o = fromALU_i;
-        end
-        else begin
-            jalr_mux_o = fromBrunchMux_i;
-        end
-    end
-    
+
+    assign jalr_mux_o = (jalr_sig) ? fromALU_i : fromBrunchMux_i;
+        
 endmodule
