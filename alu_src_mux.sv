@@ -21,21 +21,12 @@
 
 
 module alu_src_mux(
-    input logic [31:0] fromRegData_i,
-    input logic [31:0] fromImmGenData_i,
-    input logic        ALUSrc_signal_i,
-    
-    output logic [31:0] result_o
-    
+    input  logic [31:0] fromRegData_i,
+    input  logic [31:0] fromImmGenData_i,
+    input  logic        ALUSrc_signal_i,
+    output logic [31:0] result_o  
     );
-    
-    always_comb begin
-    
-    if(ALUSrc_signal_i)
-        result_o = fromImmGenData_i;
-        else
-        result_o = fromRegData_i;
-          
-    end
+
+    assign result_o = (ALUSrc_signal_i) ? fromImmGenData_i : fromRegData_i;
     
 endmodule
