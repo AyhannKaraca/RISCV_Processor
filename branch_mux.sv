@@ -21,19 +21,12 @@
 
 
 module branch_mux(
-    input logic [31:0]      from_pc_plus4_i,
-    input logic [31:0]      from_pc_plusBranch_i,
-    input logic             and_gate_signal_i,
-        
-    output logic [31:0]     result_o
+    input  logic [31:0]      from_pc_plus4_i,
+    input  logic [31:0]      from_pc_plusBranch_i,
+    input  logic             and_gate_signal_i,  
+    output logic [31:0]      result_o
     );
+
+    assign result_o = (and_gate_signal_i) ? from_pc_plusBranch_i : from_pc_plus4_i;
     
-    always_comb begin
-    
-    if(and_gate_signal_i)
-        result_o = from_pc_plusBranch_i;
-        else
-        result_o = from_pc_plus4_i;
-          
-    end
 endmodule
