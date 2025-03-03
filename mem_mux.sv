@@ -21,25 +21,21 @@
 
 
 module mem_mux(
-    input logic [31:0] fromALUData_i,
-    input logic [31:0] fromMemoryData_i,
-    input logic [31:0] fromPcPlusImm_i,
-    input logic [31:0] fromPcPlus4_i,
-    input logic [1:0]  MemtoReg_Signal_i,
-    
+    input  logic [31:0] fromALUData_i,
+    input  logic [31:0] fromMemoryData_i,
+    input  logic [31:0] fromPcPlusImm_i,
+    input  logic [31:0] fromPcPlus4_i,
+    input  logic [1:0]  MemtoReg_Signal_i,
     output logic [31:0] result_o
-    
     );
     
     always_comb begin
         case(MemtoReg_Signal_i)
-            
-            2'b00: result_o = fromALUData_i;
-            2'b01: result_o = fromMemoryData_i;
-            2'b10: result_o = fromPcPlusImm_i;
-            2'b11: result_o = fromPcPlus4_i;
-            default: result_o = 32'b0;
-            
+            2'b00:   result_o = fromALUData_i;
+            2'b01:   result_o = fromMemoryData_i;
+            2'b10:   result_o = fromPcPlusImm_i;
+            2'b11:   result_o = fromPcPlus4_i;
+            default: result_o = 32'b0; 
         endcase
     end
 endmodule
