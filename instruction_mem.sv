@@ -21,7 +21,7 @@
 
 
 module instruction_mem #(
-    parameter MEM_SIZE = 80
+    parameter MEM_SIZE = 96
 )(
     input  logic [31:0] read_address_i,
     output logic [31:0] instruction_o
@@ -110,7 +110,28 @@ module instruction_mem #(
         i_mem[76] = 32'h808b8b93; // addi x23, x23, -2040 --> x23 = x23-2040
         i_mem[77] = 32'h808b8b93; // addi x23, x23, -2040 --> x23 = x23-2040
         i_mem[78] = 32'h00418033; // add x0, x3, x4 --> x0 = 15, when read 0
-        i_mem[79] = 32'h5dc00093; // addi x1, x0, 1500 --> x1 = 1500         
+        i_mem[79] = 32'h5dc00093; // addi x1, x0, 1500 --> x1 = 1500
+
+        i_mem[80] = 32'h03f00093; // addi x1, x0, 63 --> x1 = 63
+        i_mem[81] = 32'h7db00113; // addi x2, x0, 2011 --> x2 = 2011
+        i_mem[82] = 32'ha5300193; // addi x3, x0, -1453 --> x3 = -1453
+        i_mem[83] = 32'hfea00213; // addi x4, x0, -22 --> x4 = -22
+
+        i_mem[84] = 32'h021102b3; // mul x5, x2, x1 --> x5 = 126693
+        i_mem[85] = 32'h03229333; // mulh x6, x5, x18 --> x6 = 1
+        i_mem[86] = 32'h025ca3b3; // mulhsu x7, x25, x5 --> x7 = 4294967293
+        i_mem[87] = 32'h0253b433; // mulhu x8, x7, x5 --> x8 = 126692
+        i_mem[88] = 32'h0261c4b3; // div x9, x3, x6 --> x9 = -1453
+        i_mem[89] = 32'h0201c4b3; // div x9, x3, x0 --> x9 = 0xFFFFFFFF
+        i_mem[90] = 32'h0212d533; // divu x10, x5, x1 --> x10 = 2011
+        i_mem[91] = 32'h020555b3; // divu x11, x10, x0 --> x11 = 0xFFFFFFFF
+
+        i_mem[92] = 32'h0232e633; // rem x12, x5, x3--> x12 = 282
+        i_mem[93] = 32'h020266b3; // rem x13, x4, x0 --> x13 = -22
+        i_mem[94] = 32'h0205f733; // remu x14, x11, x0 --> x14 = 0xFFFFFFFF
+        i_mem[95] = 32'h0283f7b3; // remu x15, x7, x8 --> x15 = 108493
+        
+
     end
 
 //--- sub_sig is signal for debugging...
@@ -119,13 +140,5 @@ module instruction_mem #(
 //---   
 
     assign instruction_o = i_mem[read_address_i >> 2];
-
-endmodule
-    
-    
-    
-    always_comb begin
-            instruction_o = i_mem[read_address_i >> 2];
-    end
 
 endmodule
