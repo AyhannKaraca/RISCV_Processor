@@ -21,13 +21,12 @@
 
 
 module program_counter(
-    input logic         clk_i,
-    input logic         reset_i,
-    
-    input logic  [31:0] pc_i,
-    output logic [31:0] pc_o
+    input  logic         clk_i,
+    input  logic         reset_i,
+    input  logic  [31:0] pc_i,
+    output logic  [31:0] pc_o
     );
-    
+
     always_ff @(posedge clk_i) begin
         if(reset_i)begin
             pc_o <= 32'b0;
