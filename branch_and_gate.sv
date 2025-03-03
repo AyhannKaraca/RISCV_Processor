@@ -21,13 +21,11 @@
 
 
 module branch_and_gate(
-    input logic Branch_Signal_i,
-    input logic Zero_i,
-    
+    input  logic Branch_Signal_i,
+    input  logic Zero_i,
     output logic result_o
     );
+
+    assign result_o = Branch_Signal_i & Zero_i;
     
-    always_comb begin
-        result_o = Branch_Signal_i & Zero_i;
-    end
 endmodule
